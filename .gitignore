@@ -1,0 +1,7 @@
+/Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/venv/Scripts/*.dll
+/Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/venv/Scripts/*.exe
+/Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/data_prepare/__pycache__/*.pyc
+/Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/image_classification/__pycache__/*.pyc
+/Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/models/__pycache__/*.pyc
+/Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/utils/__pycache__/*.pyc
+/Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/venv/Scripts/*.pyd

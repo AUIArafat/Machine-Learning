@@ -2,8 +2,8 @@ from itertools import product
 
 from keras.optimizers import Adam
 
-from audio_classification.config import cfg
-from audio_classification.train_net import TrainNet
+from image_classification.config import cfg
+from image_classification.train_net import TrainNet
 
 cfg.MODEL.TRAIN.OUTPUT_DIR = '/home/user/Desktop/SN/Data/output'
 cfg.MODEL.EPOCHS = 40

@@ -5,7 +5,7 @@ from keras.losses import categorical_crossentropy
 import keras.backend as k
 import tensorflow as tf
 
-from data_prepare.audio_data_generator import AudioDataGenerator
+from data_prepare.image_data_generator import ImageDataGenerator
 from utils.file_utils import read_csv_label, write_pickle
 
 from utils.cnn_utils import split_data, save_plot, write_model_performance
@@ -49,9 +49,9 @@ class TrainNet:
         feature_dim = self.cfg.MODEL.FEATURE_DIM
         duration = self.cfg.MODEL.DURATION
 
-        training_generator = AudioDataGenerator(labels_train, num_classes, feature_dim, duration)
-        validation_generator = AudioDataGenerator(labels_validation, num_classes, feature_dim, duration)
-        test_generator = AudioDataGenerator(labels_test, num_classes, feature_dim, duration, shuffle=False)
+        training_generator = ImageDataGenerator(labels_train, num_classes, feature_dim, duration)
+        validation_generator = ImageDataGenerator(labels_validation, num_classes, feature_dim, duration)
+        test_generator = ImageDataGenerator(labels_test, num_classes, feature_dim, duration, shuffle=False)
 
         return training_generator, validation_generator, test_generator
 

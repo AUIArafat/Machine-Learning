@@ -2,10 +2,9 @@ import numpy as np
 import keras
 import random
 
-from data_prepare.audio_feature import load_audio, get_mel_spectrogram
 
 
-class AudioDataGenerator(keras.utils.Sequence):
+class ImageDataGenerator(keras.utils.Sequence):
     """
     Data Generator class using Keras
     This takes data location and their labels and some configurations to
