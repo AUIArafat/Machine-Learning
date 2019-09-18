@@ -4,7 +4,7 @@ from keras.optimizers import Adam
 from image_classification.train_net import TrainNet
 
 cfg.DATA.CREATE_CHUNK = False
-cfg.MODEL.TRAIN.OUTPUT_DIR = 'OutputResult'
+cfg.MODEL.TRAIN.OUTPUT_DIR = '../OutputResult'
 cfg.MODEL.EPOCHS = 25
 
 adam = Adam(lr=0.0001)

@@ -1,4 +1,4 @@
-from models.audio_classification_cnn import AudioClassificationCNN
+from models.image_classification_cnn import ImageClassificationCNN
 
 
 def get_network(name, params):
@@ -9,6 +9,6 @@ def get_network(name, params):
     :return: keras network if it exists else raise KeyError
     """
     if name == 'audio_classification_cnn':
-        return AudioClassificationCNN(**params).get()
+        return ImageClassificationCNN(**params).get()
     else:
         raise KeyError("Unknown network " + name)

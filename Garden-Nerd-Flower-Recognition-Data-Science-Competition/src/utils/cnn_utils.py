@@ -13,14 +13,13 @@ def split_data(labels, split):
     :param split: tuple of 3 elements (train_fraction, validation_fraction, test_fraction) adding up to 1
     :return: tuple of 3 dictionaries train_set, validation_set, test_set
     """
-    assert(len(split) == 3)
+    assert(len(split) == 2)
     assert(sum(split) == 1.0)
 
     keys = list(labels.keys())
     shuffle(keys)
     labels_train = {}
     labels_validation = {}
-    labels_test = {}
 
     for k in range(len(keys)):
         key = keys[k]
@@ -28,10 +27,8 @@ def split_data(labels, split):
             labels_train[key] = labels[key]
         elif k < (split[0] + split[1]) * len(keys):
             labels_validation[key] = labels[key]
-        else:
-            labels_test[key] = labels[key]
 
-    return labels_train, labels_validation, labels_test
+    return labels_train, labels_validation
 
 
 def save_plot(history, metric, path):

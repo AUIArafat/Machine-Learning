@@ -5,7 +5,7 @@ from keras import regularizers
 from models.network import Network
 
 
-class AudioClassificationCNN(Network):
+class ImageClassificationCNN(Network):
     def __init__(self, num_classes, input_dim=(128, 128), activation='relu', dropout_rate=0.5):
         """
         :param num_classes: number of classes

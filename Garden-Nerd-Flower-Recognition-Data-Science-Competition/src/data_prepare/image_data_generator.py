@@ -1,6 +1,9 @@
+import os
+
 import numpy as np
 import keras
 import random
+import cv2
 
 
 
@@ -10,7 +13,7 @@ class ImageDataGenerator(keras.utils.Sequence):
     This takes data location and their labels and some configurations to
     generate data for each step instead of loading the complete dataset at once
     """
-    def __init__(self, labels, num_classes, feature_dim, duration, batch_size=64, shuffle=True):
+    def __init__(self, labels, num_classes, feature_dim, duration, batch_size=64, shuffle=True,image_height = 400, image_width = 400, image_channel = 3):
         """
         initialize AudioDataGenerator
 
@@ -27,6 +30,9 @@ class ImageDataGenerator(keras.utils.Sequence):
         self.duration = duration
         self.batch_size = batch_size
         self.shuffle = shuffle
+        self.image_height = image_height
+        self.image_width = image_width
+        self.image_channel = image_channel
         self.indexes = np.arange(len(self.labels))
         self.on_epoch_end()
 
@@ -57,31 +63,59 @@ class ImageDataGenerator(keras.utils.Sequence):
         if self.shuffle:
             random.shuffle(self.indexes)
 
-    def __data_generation(self, labels_temp):
-        """
-        Generates data containing batch_size samples
+    # fuction only to read image from file
+    def get_image(index, data, should_augment):
+        # Read image and appropiate traffic light color
+        print("data ", data)
+        image = cv2.imread(os.path.join(
+            ROOT_PATH, data['image_id'].values[index].strip()))
+        color = data['class'].values[index]
 
-        :param labels_temp: class label for this batch(not one hot encoded)
-        :return: (data, class_label) where class label is in categorical(one hot) form
-        """
-        # Initialization
-        x = np.empty((len(labels_temp), self.feature_dim))
-        y = np.empty(len(labels_temp), dtype=int)
+        return [image, color]
 
-        # Generate data
-        for i, file_path in enumerate(labels_temp):
-            # load audio
-            audio = load_audio(file_path, duration=self.duration)
-            feature = get_mel_spectrogram(audio)
-            # ensure feature dimension as required
-            if feature.shape[1] < self.feature_dim[1]:
-                feature = np.tile(feature, int(np.ceil(self.feature_dim[1]/feature.shape[1])))
+    def __data_generation(self, data, should_augment=False):
+        while True:
+            # Randomize the indices to make an array
+            indices_arr = np.random.permutation(data.count()[0])
+            for batch in range(0, len(indices_arr), self.batch_size):
+                # slice out the current batch according to batch-size
+                current_batch = indices_arr[batch:(batch + self.batch_size)]
 
-            start_idx = np.random.randint(1 + x.shape[1]-128)
-            feature = feature[:, start_idx: start_idx+self.feature_dim[0]]
+                # initializing the arrays, x_train and y_train
+                x_train = np.empty(
+                    [0, self.image_height, self.image_width, self.image_channel], dtype=np.float32)
+                y_train = np.empty([0], dtype=np.int32)
 
-            x[i, ] = feature
-            # store class
-            y[i] = self.labels[file_path]
+                for i in current_batch:
+                    # get an image and its corresponding color for an traffic light
+                    [image, color] = get_image(i, data, should_augment)
 
-        return x, keras.utils.to_categorical(y, num_classes=self.num_classes)
+                    # Appending them to existing batch
+                    x_train = np.append(x_train, [image], axis=0)
+                    y_train = np.append(y_train, [color])
+                y_train = keras.utils.to_categorical(y_train, num_classes=self.num_classes)
+
+                yield (x_train, y_train)
+
+    # Change brightness levels
+    def random_brightness(image):
+        # Convert 2 HSV colorspace from BGR colorspace
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        # Generate new random brightness
+        rand = random.uniform(0.3, 1.0)
+        hsv[:, :, 2] = rand * hsv[:, :, 2]
+        # Convert back to BGR colorspace
+        new_img = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+        return new_img
+
+    # Zoom-in
+    def zoom(self, image):
+        zoom_pix = random.randint(0, 10)
+        zoom_factor = 1 + (2 * zoom_pix) / self.image_height
+        image = cv2.resize(image, None, fx=zoom_factor,
+                           fy=zoom_factor, interpolation=cv2.INTER_LINEAR)
+        top_crop = (image.shape[0] - self.image_height) // 2
+        left_crop = (image.shape[1] - self.image_width) // 2
+        image = image[top_crop: top_crop + self.image_height,
+                left_crop: left_crop + self.image_width]
+        return image

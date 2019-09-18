@@ -65,7 +65,10 @@ def read_csv_label(csv_file):
     with open(csv_file) as f:
         reader = csv.reader(f)
         for row in reader:
-            labels[row[0]] = int(row[1])
+            try:
+                labels[row[0]] = int(row[1])
+            except:
+                labels[row[0]] = 999
     return labels
 
 

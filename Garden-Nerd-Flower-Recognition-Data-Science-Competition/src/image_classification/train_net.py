@@ -40,9 +40,9 @@ class TrainNet:
         prepare Data training/validation/test Generators
         :return: tuple of (training_generator, validation_generator, test_generator)
         """
-        labels = read_csv_label(self.cfg.DATA.LABEL_FILE)
-
-        labels_train, labels_validation, labels_test = split_data(labels, self.cfg.MODEL.TRAIN.DATA_SPLIT)
+        labels = read_csv_label(self.cfg.DATA.LABEL_TRAIN_FILE)
+        labels_test = read_csv_label(self.cfg.DATA.LABEL_TEST_FILE)
+        labels_train, labels_validation = split_data(labels, self.cfg.MODEL.TRAIN.DATA_SPLIT)
         self.test_data = labels_test
 
         num_classes = self.cfg.MODEL.NUM_CLASSES
