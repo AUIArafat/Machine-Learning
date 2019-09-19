@@ -13,13 +13,13 @@ cfg.DATA.CATEGORIES = ('Doorbell', 'Oven', 'Door', 'Bathtub', 'Laughter', 'Dog',
                        'Baby Crying')
 
 cfg.MODEL = EasyDict()
-cfg.MODEL.NUM_CLASSES = 112
+cfg.MODEL.NUM_CLASSES = 102
 cfg.MODEL.FEATURE_DIM = (128, 128)
 cfg.MODEL.DURATION = 1  # Audio duration in seconds
 cfg.MODEL.DROPOUT = 0.5
 cfg.MODEL.ACTIVATION = 'relu'
 
-cfg.MODEL.NETWORK = 'audio_classification_cnn'
+cfg.MODEL.NETWORK = 'image_classification_cnn'
 
 cfg.MODEL.TRAIN = EasyDict()
 cfg.MODEL.TRAIN.BATCH_SIZE = 64

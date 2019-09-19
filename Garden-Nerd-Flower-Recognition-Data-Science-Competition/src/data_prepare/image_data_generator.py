@@ -87,11 +87,11 @@ class ImageDataGenerator(keras.utils.Sequence):
                 [image, class_name] = self.get_image(i, file_path, should_augment)
 
                 # Appending them to existing batch
-                x_train = np.append(x_train, [image], axis=0)
-                y_train = np.append(y_train, [class_name])
-                # x_train[i, ] = image
-                # y_train[i] = class_name
-                # print("X_train : ", x_train)
+                # x_train = np.append(x_train, [image], axis=0)
+                # y_train = np.append(y_train, [class_name])
+                x_train[i, ] = image
+                y_train[i] = class_name
+                # print("Y_train : ", y_train, " num class : ", self.num_classes)
             y_train = keras.utils.to_categorical(y_train, num_classes=self.num_classes)
             return (x_train, y_train)
 
