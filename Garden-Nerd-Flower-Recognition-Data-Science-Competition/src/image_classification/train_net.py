@@ -45,6 +45,7 @@ class TrainNet:
         labels_train, labels_validation = split_data(labels, self.cfg.MODEL.TRAIN.DATA_SPLIT)
         self.test_data = labels_test
 
+        print("labels train : ", labels_train)
         num_classes = self.cfg.MODEL.NUM_CLASSES
         feature_dim = self.cfg.MODEL.FEATURE_DIM
         duration = self.cfg.MODEL.DURATION
@@ -53,6 +54,7 @@ class TrainNet:
         validation_generator = ImageDataGenerator(labels_validation, num_classes, feature_dim, duration)
         test_generator = ImageDataGenerator(labels_test, num_classes, feature_dim, duration, shuffle=False)
 
+        print("train generator : ", training_generator)
         return training_generator, validation_generator, test_generator
 
     def train(self, save_log=True):
@@ -76,12 +78,21 @@ class TrainNet:
 
         model.compile(optimizer=self.optimizer, loss=self.loss, metrics=['accuracy'])
 
+        print("Model : ", model)
         history = model.fit_generator(
-            generator=self.training_generator,
-            validation_data=self.validation_generator,
-            use_multiprocessing=True,
-            verbose=1,
+            # generator=self.training_generator,
+            # validation_data=self.validation_generator,
+            # use_multiprocessing=True,
+            # verbose=1,
+            # epochs=self.cfg.MODEL.EPOCHS,
+            # callbacks=[checkpoint]
+
+            self.training_generator,
+            #steps_per_epoch=len(d_train) // BATCH_SIZE,
             epochs=self.cfg.MODEL.EPOCHS,
+            validation_data=self.validation_generator,
+            #validation_steps=len(d_valid) // BATCH_SIZE,
+            verbose=1,
             callbacks=[checkpoint]
         )
 

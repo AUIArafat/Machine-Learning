@@ -4,8 +4,8 @@ import numpy as np
 import keras
 import random
 import cv2
-
-
+import matplotlib.pyplot as plt
+from PIL import Image
 
 class ImageDataGenerator(keras.utils.Sequence):
     """
@@ -13,7 +13,7 @@ class ImageDataGenerator(keras.utils.Sequence):
     This takes data location and their labels and some configurations to
     generate data for each step instead of loading the complete dataset at once
     """
-    def __init__(self, labels, num_classes, feature_dim, duration, batch_size=64, shuffle=True,image_height = 400, image_width = 400, image_channel = 3):
+    def __init__(self, labels, num_classes, feature_dim, duration, batch_size=64, shuffle=True,image_height = 500, image_width = 500, image_channel = 3, root_path='../data/train/'):
         """
         initialize AudioDataGenerator
 
@@ -33,6 +33,7 @@ class ImageDataGenerator(keras.utils.Sequence):
         self.image_height = image_height
         self.image_width = image_width
         self.image_channel = image_channel
+        self.root_path = root_path
         self.indexes = np.arange(len(self.labels))
         self.on_epoch_end()
 
@@ -64,38 +65,35 @@ class ImageDataGenerator(keras.utils.Sequence):
             random.shuffle(self.indexes)
 
     # fuction only to read image from file
-    def get_image(index, data, should_augment):
+    def get_image(self, index, data, should_augment):
         # Read image and appropiate traffic light color
-        print("data ", data)
-        image = cv2.imread(os.path.join(
-            ROOT_PATH, data['image_id'].values[index].strip()))
-        color = data['class'].values[index]
-
-        return [image, color]
+        file_path = data + ".jpg"
+        path = os.path.join(self.root_path, file_path)
+        image = cv2.imread(path)
+        class_name = self.labels[data]
+        return [image, class_name]
 
     def __data_generation(self, data, should_augment=False):
-        while True:
-            # Randomize the indices to make an array
-            indices_arr = np.random.permutation(data.count()[0])
-            for batch in range(0, len(indices_arr), self.batch_size):
-                # slice out the current batch according to batch-size
-                current_batch = indices_arr[batch:(batch + self.batch_size)]
+            # initializing the arrays, x_train and y_train
+            # x_train = np.empty(
+            #     [0, self.image_height, self.image_width, self.image_channel], dtype=np.float32)
+            # y_train = np.empty([0], dtype=np.int32)
 
-                # initializing the arrays, x_train and y_train
-                x_train = np.empty(
-                    [0, self.image_height, self.image_width, self.image_channel], dtype=np.float32)
-                y_train = np.empty([0], dtype=np.int32)
+            x_train = np.empty((len(data), self.image_height, self.image_width, self.image_channel), dtype=np.float32)
+            y_train = np.empty(len(data), dtype=np.int32)
+            for i, file_path in enumerate(data):
+                # get an image and its corresponding color for an traffic light
+                #try:
+                [image, class_name] = self.get_image(i, file_path, should_augment)
 
-                for i in current_batch:
-                    # get an image and its corresponding color for an traffic light
-                    [image, color] = get_image(i, data, should_augment)
-
-                    # Appending them to existing batch
-                    x_train = np.append(x_train, [image], axis=0)
-                    y_train = np.append(y_train, [color])
-                y_train = keras.utils.to_categorical(y_train, num_classes=self.num_classes)
-
-                yield (x_train, y_train)
+                # Appending them to existing batch
+                x_train = np.append(x_train, [image], axis=0)
+                y_train = np.append(y_train, [class_name])
+                # x_train[i, ] = image
+                # y_train[i] = class_name
+                # print("X_train : ", x_train)
+            y_train = keras.utils.to_categorical(y_train, num_classes=self.num_classes)
+            return (x_train, y_train)
 
     # Change brightness levels
     def random_brightness(image):

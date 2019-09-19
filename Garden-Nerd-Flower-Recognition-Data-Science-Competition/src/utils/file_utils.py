@@ -64,6 +64,7 @@ def read_csv_label(csv_file):
     labels = {}
     with open(csv_file) as f:
         reader = csv.reader(f)
+        next(reader)
         for row in reader:
             try:
                 labels[row[0]] = int(row[1])

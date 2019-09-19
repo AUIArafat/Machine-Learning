@@ -17,10 +17,10 @@ def split_data(labels, split):
     assert(sum(split) == 1.0)
 
     keys = list(labels.keys())
-    shuffle(keys)
+    # shuffle(keys)
     labels_train = {}
     labels_validation = {}
-
+    print("Keys : ", keys)
     for k in range(len(keys)):
         key = keys[k]
         if k < split[0] * len(keys):
