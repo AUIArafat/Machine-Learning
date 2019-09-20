@@ -19,7 +19,7 @@ cfg.MODEL.DURATION = 1  # Audio duration in seconds
 cfg.MODEL.DROPOUT = 0.5
 cfg.MODEL.ACTIVATION = 'relu'
 
-cfg.MODEL.NETWORK = 'image_classification_cnn'
+cfg.MODEL.NETWORK = 'image_classification_ResNet50'
 
 cfg.MODEL.TRAIN = EasyDict()
 cfg.MODEL.TRAIN.BATCH_SIZE = 64
