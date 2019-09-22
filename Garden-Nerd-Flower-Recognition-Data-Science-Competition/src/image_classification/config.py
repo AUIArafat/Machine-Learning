@@ -22,7 +22,7 @@ cfg.MODEL.ACTIVATION = 'relu'
 cfg.MODEL.NETWORK = 'image_classification_ResNet50'
 
 cfg.MODEL.TRAIN = EasyDict()
-cfg.MODEL.TRAIN.BATCH_SIZE = 64
+cfg.MODEL.TRAIN.BATCH_SIZE = 32
 cfg.MODEL.TRAIN.OUTPUT_DIR = 'OutputResult'
 cfg.MODEL.TRAIN.DATA_SPLIT = (0.8, 0.2)
 cfg.MODEL.TRAIN.SAVE_BEST_ONLY = True

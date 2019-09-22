@@ -92,7 +92,7 @@ class ImageDataGenerator(keras.utils.Sequence):
                 x_train[i, ] = image
                 y_train[i] = class_name
                 # print("Y_train : ", y_train, " num class : ", self.num_classes)
-            y_train = keras.utils.to_categorical(y_train, num_classes=self.num_classes)
+            y_train = keras.utils.to_categorical(y_train-1, num_classes=self.num_classes)
             return (x_train, y_train)
 
     # Change brightness levels
