@@ -5,3 +5,21 @@
 /Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/models/__pycache__/*.pyc
 /Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/utils/__pycache__/*.pyc
 /Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/venv/Scripts/*.pyd
+/Machine Learning Web App/.idea
+/Machine Learning Web App/env
+__pycache__
+/Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/.idea
+/.idea/
+__pycache__/
+/__pycache__/
+/__pycache__
+*.xml
+*.iml
+*.xml
+*.xml
+*.xml
+Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/.idea/vcs.xml
+Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/data/test/.DS_Store
+Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/data/train/.DS_Store
+*.pyc
+Garden-Nerd-Flower-Recognition-Data-Science-Competition/src/image_classification/config.pyc
